@@ -20,7 +20,7 @@ jobs:
       - name: 2. 安装 Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       - name: 3. 安装依赖库
         run: pip install -r requirements.txt
