@@ -1,37 +1,41 @@
 name: 每天自动抓新闻
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:      # 手动运行按钮
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '0 22 * * *'  # 每天自动运行
+
+# 这里是关键：赋予全局写入权限
+permissions:
+  contents: write
 
 jobs:
   daily-news:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
+    
     steps:
-      - name: 下载代码
+      - name: 1. 下载代码
         uses: actions/checkout@v3
 
-      - name: 安装 Python
+      - name: 2. 安装 Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: 安装依赖库
+      - name: 3. 安装依赖库
         run: pip install -r requirements.txt
 
-      - name: 运行机器人
+      - name: 4. 运行机器人脚本
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: python main.py
 
-      - name: 保存报告
+      - name: 5. 提交并保存网页
+        # 这一步最容易出 128 错误，我们加上详细配置
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "News Bot"
-          git add DAILY_REPORT.md
-          git commit -m "更新日报" || echo "没有新内容"
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add index.html
+          # 如果没有变化就不提交，避免报错
+          git commit -m "自动更新网页" || echo "⚠️ 暂无内容更新"
           git push
