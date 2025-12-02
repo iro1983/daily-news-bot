@@ -1,0 +1,37 @@
+name: 每天自动抓新闻
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 22 * * *'
+
+jobs:
+  daily-news:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 下载代码
+        uses: actions/checkout@v3
+
+      - name: 安装 Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: 安装依赖库
+        run: pip install -r requirements.txt
+
+      - name: 运行机器人
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: python main.py
+
+      - name: 保存报告
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "News Bot"
+          git add DAILY_REPORT.md
+          git commit -m "更新日报" || echo "没有新内容"
+          git push
