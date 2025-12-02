@@ -1,0 +1,5 @@
+google-generativeai
+feedparser
+pytrends
+requests
+pandas
