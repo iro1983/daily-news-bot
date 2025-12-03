@@ -15,7 +15,7 @@ def get_best_model():
         model_list = list(genai.list_models())
         supported_models = [m.name for m in model_list if 'generateContent' in m.supported_generation_methods]
         
-        # 优先 Flash (长文本处理快)
+        # 优先 Flash (速度快)
         for name in supported_models:
             if 'flash' in name.lower(): return genai.GenerativeModel(name)
         # 其次 Pro
@@ -37,7 +37,6 @@ def get_data():
         data_text += "\n【Google Trends】:\n"
         for entry in feed.entries[:15]:
             traffic = getattr(entry, 'ht_approx_traffic', 'N/A')
-            # 抓取新闻片段作为原文
             data_text += f"- Keyword: {entry.title} (Traffic: {traffic})\n  Raw Context: {entry.description}\n"
     except Exception as e:
         print(f"⚠️ Google 跳过: {e}")
@@ -58,15 +57,15 @@ def get_data():
             if feed.entries:
                 data_text += f"\n【Source: {source_name}】:\n"
                 for entry in feed.entries[:6]: 
-                    # 抓取正文 (Selftext)
+                    # 抓取正文
                     raw_content = "Link post / No text content."
                     if hasattr(entry, 'content'):
-                        raw_content = entry.content[0].value[:1000] # 抓取1000字，保留更多细节
+                        raw_content = entry.content[0].value[:1200]
                     elif hasattr(entry, 'summary'):
-                        raw_content = entry.summary[:1000]
+                        raw_content = entry.summary[:1200]
                     
-                    # 简单的 HTML 清洗，保留换行
-                    raw_content = raw_content.replace("<p>", "").replace("</p>", "\n").replace("<br>", "\n").replace("&nbsp;", " ")
+                    # 清洗
+                    raw_content = raw_content.replace("<p>", "").replace("</p>", "\n\n").replace("<br>", "\n")
                     
                     data_text += f"--- Post ---\nTitle: {entry.title}\nLink: {entry.link}\nRaw Content: {raw_content}\n"
         except Exception as e:
@@ -74,71 +73,51 @@ def get_data():
             
     return data_text
 
-# ================= 3. AI 设计师 (网格布局 + 折叠原文) =================
+# ================= 3. AI 设计师 (内置专业 CSS) =================
 def analyze_to_html(text_data):
     model = get_best_model()
     if not model: return "<h1>AI 配置失败</h1>"
 
     date_str = datetime.now().strftime("%Y-%m-%d")
-    print(f"🧠 AI 正在构建可视化仪表盘...")
+    print(f"🧠 AI 正在构建高颜值仪表盘...")
     
-    prompt = f"""
-    You are a UI/UX Designer and Business Analyst. Today is {date_str}.
-    
-    【Goal】
-    Transform the raw data into a **High-Density Business Intelligence Dashboard**.
-    
-    【UI Layout Requirements】
-    1. **Masonry Grid Layout**: Use a 3-column grid for desktop (horizontal display), collapsing to 1 column on mobile.
-    2. **Collapsible Raw Content**: 
-       - Inside each card, use the HTML `<details>` and `<summary>` tags.
-       - The summary should say "🔍 Read Original Post / 查看原文详情".
-       - Inside the details, put the **Raw Content** (user's full complaint, story, or news snippet) verbatim.
-    3. **Visual Hierarchy**: 
-       - Title (Bold)
-       - Tags (Colored badges)
-       - Analysis (Bilingual)
-       - **Hidden Raw Content** (Bottom)
+    # --- 这里是核心：直接把写好的 CSS 喂给 AI，不让它乱写 ---
+    css_template = """
+    <style>
+        :root { --bg: #0f172a; --card-bg: #1e293b; --text-main: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8; --border: #334155; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; padding: 20px; border-bottom: 1px solid var(--border); }
+        .header h1 { font-size: 2.5rem; background: linear-gradient(90deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        
+        /* 瀑布流/网格布局 */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 24px; }
+        
+        /* 卡片样式 */
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); border-color: var(--accent); }
+        
+        /* 标签 */
+        .tags { margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag { font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .tag-source { background: #334155; color: #cbd5e1; }
+        .tag-biz { background: #451a03; color: #fbbf24; border: 1px solid #78350f; }
+        .tag-tech { background: #0f172a; color: #38bdf8; border: 1px solid #0c4a6e; }
+        .tag-trend { background: #3f0e40; color: #f472b6; border: 1px solid #831843; }
 
-    【Content Requirements (15+ Items)】
-    Generate 3 Sections (Business, Trends, Tech). At least 5 cards per section.
-    
-    **Card Content Structure**:
-    1. **Header**: English Title + 中文标题
-    2. **Tags**: [Source] [Category]
-    3. **Insight (Bilingual)**: 
-       - **Opportunity/Analysis**: Deep dive into the "Why".
-       - **Action**: One sentence tip.
-    4. **The Raw Content (Hidden)**:
-       - Quote the user's post body or news description inside the `<details>` tag. This is CRITICAL.
-
-    【Design & CSS Rules】
-    - Body Background: #121212 (Deep Dark).
-    - Grid Container: `display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;`
-    - Card Style: Background #1e1e1e; Border-radius 12px; Padding 20px; Border: 1px solid #333.
-    - Text: White (#eee) for main text, Gray (#aaa) for secondary.
-    - "Details" Section: Background #000; Padding 15px; Margin-top 15px; Border-radius 8px; Font-family: monospace; Font-size: 0.9em; Color: #81c784 (Terminal Green style).
-
-    【Raw Data】
-    {text_data}
-    
-    Output ONLY valid HTML code with internal CSS.
-    """
-
-    try:
-        response = model.generate_content(prompt)
-        return response.text.replace("```html", "").replace("```", "")
-    except Exception as e:
-        return f"<h1>生成出错</h1><p>{e}</p>"
-
-# ================= 主程序 =================
-if __name__ == "__main__":
-    raw_data = get_data()
-    if not raw_data: raw_data = "No data."
-    
-    html_page = analyze_to_html(raw_data)
-    
-    with open("index.html", "w", encoding="utf-8") as f:
-        f.write(html_page)
-    
-    print("✅ 仪表盘生成完成")
+        /* 标题与内容 */
+        .card h2 { font-size: 1.25rem; margin: 0 0 8px 0; color: #fff; line-height: 1.3; }
+        .card h3 { font-size: 1rem; color: var(--text-dim); margin: 0 0 16px 0; font-weight: 400; }
+        .analysis-box { background: #0f172a; padding: 16px; border-radius: 8px; border-left: 4px solid var(--accent); margin-bottom: 16px; }
+        .analysis-en { margin-bottom: 8px; color: #e2e8f0; font-weight: 500; }
+        .analysis-cn { color: #94a3b8; font-size: 0.95rem; }
+        
+        /* 重点：原文折叠按钮 */
+        details { margin-top: auto; border-top: 1px solid var(--border); padding-top: 12px; }
+        summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 0.9rem; user-select: none; transition: color 0.2s; list-style: none; display: flex; align-items: center; }
+        summary:hover { color: #7dd3fc; }
+        summary::before { content: "📄"; margin-right: 8px; }
+        details[open] summary { margin-bottom: 12px; }
+        
+        /* 原文内容区域 */
+        .raw-content { background: #000; color: #22c55e; padding: 16px; border-radius: 8px; font-family: 'Cons
