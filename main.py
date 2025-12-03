@@ -2,107 +2,126 @@ import os
 import feedparser
 import google.generativeai as genai
 from datetime import datetime
+import time
 
 # ================= 配置区 =================
 api_key = os.environ.get("GOOGLE_API_KEY")
 
 # ================= 1. 智能模型选择 =================
 def get_best_model():
-    if not api_key:
-        print("❌ 错误：未找到 API Key")
-        return None
+    if not api_key: return None
     genai.configure(api_key=api_key)
     try:
+        # 必须用 Flash，因为这次数据量更大，Flash 的长文本处理能力最适合
         all_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        # 优先找 Flash (速度快，长文本能力强，适合双语输出)
         for m in all_models:
-            if 'flash' in m and 'exp' not in m and '1.5' in m: return genai.GenerativeModel(m)
-        for m in all_models:
-            if 'flash' in m: return genai.GenerativeModel(m)
-        if all_models: return genai.GenerativeModel(all_models[0])
+            if 'flash' in m and '1.5' in m: return genai.GenerativeModel(m)
+        return genai.GenerativeModel('gemini-1.5-flash')
     except: return None
-    return None
 
-# ================= 2. 强力数据采集 (Google RSS + Reddit) =================
+# ================= 2. 深度数据采集 (加大采集量) =================
 def get_data():
-    print("🚀 开始全网热点采集...")
+    print("🚀 开始全网情报挖掘 (加量版)...")
     data_text = ""
     
-    # 1. Google Trends RSS (极稳)
+    # 1. Google Trends (宏观) -> 增加到 20 条
     try:
-        print("🔥 正在抓取 Google 实时热搜...")
         feed = feedparser.parse("https://trends.google.com/trends/trendingsearches/daily/rss?geo=US")
-        if feed.entries:
-            data_text += "\n【Source: Google Trends US】:\n"
-            for entry in feed.entries[:20]: # 抓前20个
-                traffic = getattr(entry, 'ht_approx_traffic', 'N/A')
-                data_text += f"- Keyword: {entry.title} (Traffic: {traffic})\n"
-                data_text += f"  News Snippet: {entry.description}\n"
+        data_text += "\n【Google Trends (Macro Traffic)】:\n"
+        for entry in feed.entries[:20]: # 抓取前 20 个
+            traffic = getattr(entry, 'ht_approx_traffic', 'N/A')
+            data_text += f"- Keyword: {entry.title} (Traffic: {traffic})\n  News: {entry.description}\n"
     except Exception as e:
-        print(f"⚠️ Google RSS 抓取异常: {e}")
+        print(f"⚠️ Google 跳过: {e}")
 
-    # 2. Reddit 吃瓜与热议
+    # 2. Reddit 垂直板块 (微观痛点) -> 每个板块增加到 8 条
     reddit_feeds = [
-        ("r/popular", "https://www.reddit.com/r/popular/top/.rss?t=day"),
-        ("r/technology", "https://www.reddit.com/r/technology/top/.rss?t=day"),
-        ("r/entertainment", "https://www.reddit.com/r/entertainment/top/.rss?t=day")
+        ("r/Entrepreneur", "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day"), 
+        ("r/SideProject", "https://www.reddit.com/r/SideProject/top/.rss?t=day"),   
+        ("r/technology", "https://www.reddit.com/r/technology/top/.rss?t=day"),     
+        ("r/popular", "https://www.reddit.com/r/popular/top/.rss?t=day"),           
+        ("r/marketing", "https://www.reddit.com/r/marketing/top/.rss?t=day")        
     ]
 
     for source_name, url in reddit_feeds:
         try:
-            print(f"💬 正在抓取 {source_name}...")
-            feed = feedparser.parse(url, agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+            print(f"💎 正在挖掘 {source_name}...")
+            feed = feedparser.parse(url, agent="Mozilla/5.0")
             if feed.entries:
                 data_text += f"\n【Source: {source_name}】:\n"
-                for entry in feed.entries[:20]: 
-                    data_text += f"- Title: {entry.title}\n  Link: {entry.link}\n"
+                # 增加抓取量：每个板块抓 8 条，5个板块就是 40 条
+                for entry in feed.entries[:8]: 
+                    content_snippet = "No Content"
+                    if hasattr(entry, 'content'):
+                        content_snippet = entry.content[0].value[:600]
+                    elif hasattr(entry, 'summary'):
+                        content_snippet = entry.summary[:600]
+                    content_snippet = content_snippet.replace("<p>", "").replace("</p>", "").replace("<br>", " ")
+                    
+                    data_text += f"--- Post ---\nTitle: {entry.title}\nLink: {entry.link}\nSnippet: {content_snippet}\n"
         except Exception as e:
-            print(f"⚠️ {source_name} 抓取跳过")
+            print(f"⚠️ {source_name} 跳过")
             
     return data_text
 
-# ================= 3. AI 双语分析与网页生成 =================
+# ================= 3. AI 双语商业分析师 (强制 15+ 条) =================
 def analyze_to_html(text_data):
     model = get_best_model()
     if not model: return "<h1>AI 配置失败</h1>"
 
     date_str = datetime.now().strftime("%Y-%m-%d")
-    print(f"🤖 AI 正在进行中英文双语编译...")
+    print(f"🧠 AI 正在进行大规模双语分析...")
     
-    # --- 核心修改：双语 Prompt ---
     prompt = f"""
-    You are the editor-in-chief of "Daily US Trends". Today is {date_str}.
-    Based on the raw data from Google Trends and Reddit provided below, create a **Bilingual (English & Chinese)** HTML news report.
+    You are an expert "Business Intelligence Analyst". Today is {date_str}.
+    I have provided extensive raw data from Google Trends and Reddit.
 
-    【Content Strategy】
-    1. **Selection**: Pick top 20 most interesting/viral stories. Prioritize topics with high traffic on Google or intense discussion on Reddit.
-    2. **Bilingual Requirement**: Every section MUST correspond in English and Chinese.
-    
-    【Card Structure (HTML)】
-    For each story card, include:
-    - **Header**: 
-      - English Headline (Catchy)
-      - 中文标题 (翻译要接地气，有吸引力)
-    - **Meta Info**: Source (e.g., Google Trends) & Tags.
-    - **The Story (Content)**:
-      - A paragraph in **English** summarizing the event (approx 60-100 words).
-      - A paragraph in **Chinese** summarizing the same event.
-    - **Netizen Vibe (Reaction)**:
-      - What are people saying? (One sentence EN / One sentence CN).
+    【Goal】
+    Create a **Bilingual (English & Chinese)** Business Intelligence Report.
+    Identify **Business Opportunities**, **User Pain Points**, and **Viral Trends**.
 
-    【Design & CSS Requirements】
-    - **Theme**: Dark Mode (#121212 background).
-    - **Typography**: Clean sans-serif. 
-    - **Contrast**: 
-       - Make the **English text** a slightly lighter gray (e.g., #e0e0e0).
-       - Make the **Chinese text** bright white (e.g., #ffffff) or a highlight color to distinguish them easily.
-    - **Layout**: Grid layout (responsive). Card background: #1e1e1e. Border-radius: 12px.
-    - **Styling**: Use distinct spacing or a subtle divider line between English and Chinese sections within the card.
+    【Quantity Requirement】
+    **CRITICAL**: You MUST generate at least **15 to 20 items** in total. Do not output less than 15 items.
+
+    【Output Structure】
+    Please generate 3 sections. Each section must have 5-6 items.
+
+    ### Section 1: 🚀 Business Opportunities & Pain Points (商机与痛点)
+    *Target: 5-6 items* (Source: r/Entrepreneur, r/SideProject, r/marketing)
+    * **Card Content**:
+      - **Headline**: English Title / 中文标题
+      - **Analysis (Bilingual)**:
+        - **EN**: Briefly analyze the pain point or opportunity.
+        - **CN**: 简要分析痛点或商机。
+      - **Actionable Tip**: One specific advice (Bilingual).
+
+    ### Section 2: 🔥 Viral Trends & Traffic (流量密码)
+    *Target: 5-6 items* (Source: Google Trends & r/popular)
+    * **Card Content**:
+      - **Headline**: English Keyword / 中文热词
+      - **Context (Bilingual)**:
+        - **EN**: Why is this trending?
+        - **CN**: 为什么火了？
+      - **Marketing Angle**: How to use this trend? (Bilingual).
+
+    ### Section 3: 💡 Tech & Industry Signals (行业信号)
+    *Target: 5-6 items* (Source: r/technology, r/business)
+    * **Card Content**:
+      - **Headline**: English Event / 中文事件
+      - **Impact (Bilingual)**:
+        - **EN**: Why does it matter?
+        - **CN**: 为什么重要？
+
+    【Design & CSS】
+    - **Theme**: Dark Professional Mode (#1a1b1e background).
+    - **Typography**: English (Light Gray #ced4da), Chinese (White #ffffff).
+    - **Layout**: Grid cards (Responsive).
+    - **Tags**: Show Source & Category tags clearly.
 
     【Raw Data】
     {text_data}
     
-    Output ONLY valid HTML code. Do not use Markdown blocks.
+    Output ONLY valid HTML code.
     """
 
     try:
@@ -114,11 +133,11 @@ def analyze_to_html(text_data):
 # ================= 主程序 =================
 if __name__ == "__main__":
     raw_data = get_data()
-    if not raw_data: raw_data = "No data available."
+    if not raw_data: raw_data = "No data."
     
     html_page = analyze_to_html(raw_data)
     
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_page)
     
-    print("✅ 双语日报生成完成")
+    print("✅ 15+条双语情报生成完成")
