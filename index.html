@@ -1,95 +1,335 @@
-
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🇺🇸 美国全网热点日报 (2025-12-02)</title>
+    <title>Daily US Trends: News Report 2025-12-03</title>
     <style>
-        /* 极简新闻日报风格 */
         body {
             font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f4f4f9; /* 背景色 */
+            background-color: #121212;
+            color: #e0e0e0; /* Default for English text */
             margin: 0;
             padding: 20px;
-            color: #333;
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
         }
-
         .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
-
-        h1 {
-            color: #1a1a1a;
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.2em;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-            font-weight: 600;
-        }
-
-        .card {
-            background-color: #ffffff; /* 卡片白底 */
-            border-radius: 8px; /* 圆角 */
+        .news-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
             padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        .header {
+            margin-bottom: 15px;
         }
-
-        .card p {
-            margin: 0;
-            font-size: 1.1em;
-            color: #333;
-            font-weight: 500;
+        .header h2 {
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #e0e0e0; /* English Headline */
         }
-
-        .card small {
-            display: block;
+        .header h3 {
+            font-size: 1.3em;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #ffffff; /* Chinese Headline */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+        .meta-info {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .meta-info span {
+            background-color: #2a2a2a;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: #ccc;
+        }
+        .content p.en {
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .content p.cn {
+            color: #ffffff;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            padding-top: 10px; /* Spacing for Chinese */
+            border-top: 1px dashed rgba(255, 255, 255, 0.05); /* Subtle divider */
+        }
+        .netizen-vibe {
             margin-top: 10px;
-            color: #777;
-            font-size: 0.9em;
+        }
+        .netizen-vibe h4 {
+            font-size: 1em;
+            color: #bbbbbb;
+            margin-bottom: 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        .netizen-vibe p.en {
+            font-style: italic;
+            color: #cccccc;
+            margin-bottom: 5px;
+        }
+        .netizen-vibe p.cn {
+            font-style: italic;
+            color: #ffffff;
+        }
+
+        /* Title for the report */
+        .report-title {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #333;
+        }
+        .report-title h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .report-title p {
+            font-size: 1.2em;
+            color: #aaaaaa;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .report-title h1 {
+                font-size: 2em;
+            }
+            .report-title p {
+                font-size: 1em;
+            }
+            .news-card {
+                padding: 20px;
+            }
+            .header h2 {
+                font-size: 1.3em;
+            }
+            .header h3 {
+                font-size: 1.1em;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="report-title">
+        <h1>Daily US Trends: Top Stories of the Day</h1>
+        <p>每日美国热门趋势：今日头条</p>
+        <p>Date: 2025-12-03</p>
+    </div>
     <div class="container">
-        <h1>🇺🇸 美国全网热点日报 (2025-12-02)</h1>
-
-        <div class="card">
-            <p><strong>Costco sues the Trump administration, seeking a refund of tariffs</strong></p>
-            <small>Reddit 热门话题 - 经济/政治新闻</small>
+        <!-- Card 1: Sabrina Carpenter vs. Trump White House -->
+        <div class="news-card">
+            <div class="header">
+                <h2>Pop Star Sabrina Carpenter Clashes with Trump Admin Over 'Juno' Use</h2>
+                <h3>流行歌手萨布丽娜·卡彭特怒怼特朗普政府，因电影《朱诺》音乐侵权</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/entertainment)</span>
+                <span>Tags: Celebrity</span>
+                <span>Politics</span>
+                <span>Music</span>
+                <span>Controversy</span>
+            </div>
+            <div class="content">
+                <p class="en">Singer Sabrina Carpenter publicly condemned the Trump White House for using music from her film 'Juno' in an ICE raids video, calling it "evil and disgusting." The administration reportedly hit back, sparking an "ugly war" over her stance on their "inhumane agenda," intensifying the clash between Hollywood and political figures.</p>
+                <p class="cn">歌手萨布丽娜·卡彭特公开谴责特朗普白宫，因其在一则关于移民及海关执法局（ICE）突袭的视频中使用了她电影《朱诺》的音乐，称此举“邪恶且令人作呕”。据报道，白宫对此进行了回击，引发了一场“丑陋的口水战”，进一步加剧了好莱坞与政界人士之间的冲突。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">Many netizens are praising Carpenter for standing up against the administration's controversial policies.</p>
+                <p class="cn">许多网友赞扬卡彭特勇于站出来反对政府的争议性政策。</p>
+            </div>
         </div>
 
-        <div class="card">
-            <p><strong>In Stranger Things Season five Vecna’s apperance has changed dramatically since the previous season. This implies that the ozempic epidemic has reached even parallel dimensions</strong></p>
-            <small>Reddit 热门话题 - 流行文化/幽默</small>
+        <!-- Card 2: Pete Hegseth 'Secretary of War' Introduction -->
+        <div class="news-card">
+            <div class="header">
+                <h2>Pete Hegseth Faux Pas: Introduced as 'Secretary of War'</h2>
+                <h3>彼得·赫格塞特乌龙事件：被介绍为“战争部长”引热议</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/pics)</span>
+                <span>Tags: Politics</span>
+                <span>Gaffe</span>
+                <span>Media</span>
+                <span>Trump</span>
+            </div>
+            <div class="content">
+                <p class="en">Fox News host Pete Hegseth was controversially introduced at a rally as "Secretary of War," sparking widespread confusion and criticism. This title, reminiscent of a historical cabinet position, fueled speculation and concern about the potential militarization of government roles, drawing immediate backlash across social media platforms.</p>
+                <p class="cn">福克斯新闻主持人彼得·赫格塞特在一场集会上被介绍为“战争部长”，引发了广泛的困惑和批评。这一头衔让人联想到历史上的内阁职位，激起了人们对政府角色潜在军事化的猜测和担忧，在社交媒体上立即引发强烈反弹。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">The internet is buzzing with disbelief and concern over the implications of such an introduction.</p>
+                <p class="cn">互联网上充斥着对这种介绍所暗示的意义的难以置信和担忧。</p>
+            </div>
         </div>
 
-        <div class="card">
-            <p><strong>Police brutality ^_^</strong></p>
-            <small>Reddit 热门话题 - 社会议题/讽刺</small>
+        <!-- Card 3: Lilly Wachowski on 'The Matrix' and Fascism -->
+        <div class="news-card">
+            <div class="header">
+                <h2>'The Matrix' Co-Director Slams Right-Wing Misappropriation, Citing Fascism</h2>
+                <h3>《黑客帝国》联合导演痛批右翼盗用电影本意，直指法西斯主义</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/entertainment)</span>
+                <span>Tags: Film</span>
+                <span>Politics</span>
+                <span>Culture</span>
+                <span>Wachowski</span>
+            </div>
+            <div class="content">
+                <p class="en">Lilly Wachowski, co-director of 'The Matrix,' publicly called out right-wing groups for misinterpreting and appropriating the film's core message. She stated that such actions are a classic tactic of fascism, emphasizing that her iconic work's themes are being twisted for agendas contrary to its original intent.</p>
+                <p class="cn">《黑客帝国》联合导演莉莉·沃卓斯基公开指责右翼团体误读和盗用电影的核心信息。她表示，这种行为是法西斯主义的典型策略，强调她这部标志性作品的主题正在被扭曲，以服务于与其初衷相悖的议程。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">Fans largely support Wachowski, asserting that creators have the right to define their work's meaning.</p>
+                <p class="cn">粉丝们普遍支持沃卓斯基，认为创作者有权定义自己作品的意义。</p>
+            </div>
         </div>
 
-        <div class="card">
-            <p><strong>One of my dearest friends finally took the plunge thanks to this subreddit!</strong></p>
-            <small>Reddit 热门话题 - 社区/个人故事</small>
+        <!-- Card 4: Jimmy Kimmel's Wife on Trump-Related Family Strain -->
+        <div class="news-card">
+            <div class="header">
+                <h2>Kimmel's Wife Reveals Family Rifts Over Trump Votes</h2>
+                <h3>吉米·坎摩尔妻子自曝：因特朗普投票与家人关系破裂</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/entertainment)</span>
+                <span>Tags: Celebrity</span>
+                <span>Politics</span>
+                <span>Family</span>
+                <span>Social Issues</span>
+            </div>
+            <div class="content">
+                <p class="en">Molly McNearney, Jimmy Kimmel's wife and show producer, shared a deeply personal account of losing family relationships due to their votes for Donald Trump. Her revelation highlights the intense political polarization affecting even close familial bonds, resonating with many Americans experiencing similar divides.</p>
+                <p class="cn">吉米·坎摩尔的妻子兼节目制作人莫莉·麦克尼尔尼透露，她因家人投票给唐纳德·特朗普而失去了亲密的家庭关系。她的这番话突显了政治两极分化对亲密家庭纽带的影响，引起了许多经历类似隔阂的美国人的共鸣。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">This story sparks discussions about the toll political differences take on personal relationships and family unity.</p>
+                <p class="cn">这个故事引发了关于政治分歧对人际关系和家庭团结造成影响的讨论。</p>
+            </div>
         </div>
 
-        <div class="card">
-            <p><strong>Aunty with the W.</strong></p>
-            <small>Reddit 热门话题 - 网络俚语/文化</small>
+        <!-- Card 5: Jada Pinkett Smith's Alleged Threat -->
+        <div class="news-card">
+            <div class="header">
+                <h2>Jada Pinkett Smith Accused of Threatening Will's Friend Amid $3M Claim</h2>
+                <h3>贾达·萍克特·史密斯被控威胁威尔·史密斯的朋友，牵涉300万美元索赔</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/entertainment)</span>
+                <span>Tags: Celebrity</span>
+                <span>Drama</span>
+                <span>Legal</span>
+                <span>Gossip</span>
+            </div>
+            <div class="content">
+                <p class="en">Jada Pinkett Smith is facing claims she threatened one of Will Smith's friends, allegedly telling him he'd "catch a bullet" if he continued spreading her "personal business." This accusation is part of a larger $3 million complaint, further entangling the celebrity couple in fresh controversy and legal woes.</p>
+                <p class="cn">贾达·萍克特·史密斯面临指控，称她威胁了威尔·史密斯的一位朋友，据称警告他如果继续散布她的“私人事务”就会“吃一颗子弹”。这项指控是300万美元索赔案的一部分，这使得这对明星夫妇再次陷入新的争议和法律困境。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">Social media is ablaze with reactions, with many questioning the Smiths' personal conduct and relationship dynamics.</p>
+                <p class="cn">社交媒体上充斥着各种反应，许多人质疑史密斯夫妇的个人行为和关系动态。</p>
+            </div>
+        </div>
+
+        <!-- Card 6: The Enigmatic Tripod Fish -->
+        <div class="news-card">
+            <div class="header">
+                <h2>Deep Sea Marvel: The Mysterious Tripod Fish That Stands on Fins</h2>
+                <h3>深海奇观：神秘的“三脚鱼”以鳍立足海底</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/interestingasfuck)</span>
+                <span>Tags: Nature</span>
+                <span>Science</span>
+                <span>Ocean</span>
+                <span>Discovery</span>
+            </div>
+            <div class="content">
+                <p class="en">A fascinating deep-sea creature, the tripod fish, has captured public imagination with its unique ability to "stand" on the ocean floor using three elongated fins. This adaptation allows it to patiently wait for prey in the abyssal depths, showcasing the incredible biodiversity of unexplored marine environments.</p>
+                <p class="cn">一种迷人的深海生物——三脚鱼，因其独特的能力而吸引了公众的想象力：它能利用三根细长的鱼鳍“站立”在海床上。这种适应性使它能够在大洋深处耐心等待猎物，展示了未被探索的海洋环境中令人难以置信的生物多样性。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">People are amazed by nature's ingenuity, sharing awe and wonder at this bizarre deep-sea inhabitant.</p>
+                <p class="cn">人们对大自然的巧夺天工感到惊叹，纷纷表达对这种奇异深海生物的敬畏和好奇。</p>
+            </div>
+        </div>
+
+        <!-- Card 7: Vecna's Ozempic Transformation in Stranger Things S5 -->
+        <div class="news-card">
+            <div class="header">
+                <h2>'Stranger Things 5': Vecna's Ozempic Diet Sparks Fan Theories</h2>
+                <h3>《怪奇物语5》维克那“奥司马”瘦身引热议，剧迷脑洞大开</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/shittymoviedetails)</span>
+                <span>Tags: Pop Culture</span>
+                <span>TV Show</span>
+                <span>Humor</span>
+                <span>Stranger Things</span>
+            </div>
+            <div class="content">
+                <p class="en">A humorous fan theory suggests that Vecna, the antagonist in 'Stranger Things,' underwent an "Ozempic epidemic" transformation for Season 5, drastically changing his appearance. This light-hearted take on the character's new look links pop culture with current trends, sparking widespread amusement among fans.</p>
+                <p class="cn">一个有趣的粉丝理论认为，《怪奇物语》中的反派维克那在第五季中经历了“奥司马（Ozempic）疫情”式的转变，外貌发生了巨大变化。这种对角色新造型的轻松解读将流行文化与当前趋势联系起来，在粉丝中引发了广泛的娱乐。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">Fans are chuckling at the meta-commentary, enjoying the blend of show lore and real-world trends.</p>
+                <p class="cn">粉丝们对这种元评论乐此不疲，享受着剧集背景知识和现实世界趋势的融合。</p>
+            </div>
+        </div>
+
+        <!-- Card 8: The Beautiful 'Snow Bear' Animation -->
+        <div class="news-card">
+            <div class="header">
+                <h2>'Snow Bear': An 11,000-Drawing Animation Captivates Audiences</h2>
+                <h3>《雪熊》：11000幅手绘动画，美轮美奂引人入胜</h3>
+            </div>
+            <div class="meta-info">
+                <span>Source: Reddit (r/animation)</span>
+                <span>Tags: Art</span>
+                <span>Animation</span>
+                <span>Creativity</span>
+                <span>Viral</span>
+            </div>
+            <div class="content">
+                <p class="en">A stunning animation titled "Snow Bear," created from an astounding 11,000 individual drawings, has gone viral for its intricate artistry and heartwarming narrative. This labor of love showcases the immense talent and dedication required in traditional animation, earning widespread admiration online.</p>
+                <p class="cn">一部名为《雪熊》的精美动画，由惊人的11000幅独立手绘图组成，因其精湛的艺术性和温暖人心的叙事而迅速走红。这部充满爱意的作品展示了传统动画所需的巨大才华和奉献精神，在线上赢得了广泛赞誉。</p>
+            </div>
+            <div class="netizen-vibe">
+                <h4>Netizen Vibe:</h4>
+                <p class="en">Viewers are deeply impressed by the artistry and effort, calling it a true masterpiece of animation.</p>
+                <p class="cn">观众们对艺术性和投入深感敬佩，称其为动画的真正杰作。</p>
+            </div>
         </div>
     </div>
 </body>
