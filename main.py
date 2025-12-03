@@ -34,7 +34,7 @@ def get_data():
         feed = feedparser.parse("https://trends.google.com/trends/trendingsearches/daily/rss?geo=US")
         if feed.entries:
             data_text += "\n【Source: Google Trends US】:\n"
-            for entry in feed.entries[:8]: # 抓前8个
+            for entry in feed.entries[:20]: # 抓前20个
                 traffic = getattr(entry, 'ht_approx_traffic', 'N/A')
                 data_text += f"- Keyword: {entry.title} (Traffic: {traffic})\n"
                 data_text += f"  News Snippet: {entry.description}\n"
@@ -54,7 +54,7 @@ def get_data():
             feed = feedparser.parse(url, agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
             if feed.entries:
                 data_text += f"\n【Source: {source_name}】:\n"
-                for entry in feed.entries[:5]: 
+                for entry in feed.entries[:20]: 
                     data_text += f"- Title: {entry.title}\n  Link: {entry.link}\n"
         except Exception as e:
             print(f"⚠️ {source_name} 抓取跳过")
@@ -75,7 +75,7 @@ def analyze_to_html(text_data):
     Based on the raw data from Google Trends and Reddit provided below, create a **Bilingual (English & Chinese)** HTML news report.
 
     【Content Strategy】
-    1. **Selection**: Pick top 8 most interesting/viral stories. Prioritize topics with high traffic on Google or intense discussion on Reddit.
+    1. **Selection**: Pick top 20 most interesting/viral stories. Prioritize topics with high traffic on Google or intense discussion on Reddit.
     2. **Bilingual Requirement**: Every section MUST correspond in English and Chinese.
     
     【Card Structure (HTML)】
@@ -85,7 +85,7 @@ def analyze_to_html(text_data):
       - 中文标题 (翻译要接地气，有吸引力)
     - **Meta Info**: Source (e.g., Google Trends) & Tags.
     - **The Story (Content)**:
-      - A paragraph in **English** summarizing the event (approx 60 words).
+      - A paragraph in **English** summarizing the event (approx 60-100 words).
       - A paragraph in **Chinese** summarizing the same event.
     - **Netizen Vibe (Reaction)**:
       - What are people saying? (One sentence EN / One sentence CN).
