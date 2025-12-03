@@ -3,334 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily US Trends: News Report 2025-12-03</title>
+    <title>Daily US Trends: Top Stories - 2025-12-03</title>
     <style>
         body {
             font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
             background-color: #121212;
-            color: #e0e0e0; /* Default for English text */
+            color: #e0e0e0; /* Default English text color */
             margin: 0;
-            padding: 20px;
+            padding: 0;
             line-height: 1.6;
-            scroll-behavior: smooth;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #0d0d0d;
+            border-bottom: 2px solid #333;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 3em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .header p {
+            color: #bbb;
+            font-size: 1.2em;
+        }
+        .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
+            padding: 25px;
+            max-width: 1300px;
+            margin: 0 auto;
         }
         .news-card {
             background-color: #1e1e1e;
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.2s ease-in-out;
+            border: 1px solid #333;
         }
-        .header {
-            margin-bottom: 15px;
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
-        .header h2 {
+        .news-card h2 {
+            color: #e0e0e0; /* English headline */
             font-size: 1.5em;
             margin-top: 0;
-            margin-bottom: 5px;
-            color: #e0e0e0; /* English Headline */
+            margin-bottom: 10px;
+            line-height: 1.3;
         }
-        .header h3 {
+        .news-card h3 {
+            color: #ffffff; /* Chinese headline */
             font-size: 1.3em;
             margin-top: 0;
-            margin-bottom: 10px;
-            color: #ffffff; /* Chinese Headline */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            line-height: 1.4;
         }
         .meta-info {
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: #888;
             margin-bottom: 15px;
             display: flex;
+            justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
         }
-        .meta-info span {
-            background-color: #2a2a2a;
-            padding: 4px 8px;
-            border-radius: 6px;
-            color: #ccc;
+        .meta-info .source {
+            font-weight: bold;
+            color: #a0a0a0;
         }
-        .content p.en {
-            color: #e0e0e0;
-            margin-bottom: 10px;
-            line-height: 1.5;
+        .meta-info .tags {
+            font-style: italic;
+            color: #777;
         }
-        .content p.cn {
-            color: #ffffff;
+        .content-section {
             margin-bottom: 15px;
-            line-height: 1.5;
-            padding-top: 10px; /* Spacing for Chinese */
-            border-top: 1px dashed rgba(255, 255, 255, 0.05); /* Subtle divider */
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333; /* Subtle divider */
+        }
+        .english-content {
+            color: #e0e0e0; /* Lighter gray for English */
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        .chinese-content {
+            color: #ffffff; /* Bright white for Chinese */
+            margin-bottom: 0;
+            font-size: 1em;
         }
         .netizen-vibe {
-            margin-top: 10px;
-        }
-        .netizen-vibe h4 {
-            font-size: 1em;
-            color: #bbbbbb;
-            margin-bottom: 5px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 15px;
             margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #333; /* Another subtle divider */
+            font-size: 0.95em;
+        }
+        .netizen-vibe strong {
+            color: #bbb;
         }
         .netizen-vibe p.en {
-            font-style: italic;
-            color: #cccccc;
+            color: #e0e0e0;
             margin-bottom: 5px;
         }
-        .netizen-vibe p.cn {
-            font-style: italic;
+        .netizen-vibe p.zh {
             color: #ffffff;
-        }
-
-        /* Title for the report */
-        .report-title {
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 40px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #333;
-        }
-        .report-title h1 {
-            font-size: 2.8em;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-        .report-title p {
-            font-size: 1.2em;
-            color: #aaaaaa;
-        }
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .report-title h1 {
-                font-size: 2em;
-            }
-            .report-title p {
-                font-size: 1em;
-            }
-            .news-card {
-                padding: 20px;
-            }
-            .header h2 {
-                font-size: 1.3em;
-            }
-            .header h3 {
-                font-size: 1.1em;
-            }
+            margin-bottom: 0;
         }
     </style>
 </head>
 <body>
-    <div class="report-title">
-        <h1>Daily US Trends: Top Stories of the Day</h1>
-        <p>每日美国热门趋势：今日头条</p>
-        <p>Date: 2025-12-03</p>
+    <div class="header">
+        <h1>Daily US Trends</h1>
+        <p>Your Bilingual Guide to America's Viral Stories</p>
+        <p>Wednesday, December 3, 2025</p>
     </div>
-    <div class="container">
-        <!-- Card 1: Sabrina Carpenter vs. Trump White House -->
+
+    <div class="news-grid">
+
+        <!-- Story 1: Pete Hegseth "Secretary of War" -->
         <div class="news-card">
-            <div class="header">
-                <h2>Pop Star Sabrina Carpenter Clashes with Trump Admin Over 'Juno' Use</h2>
-                <h3>流行歌手萨布丽娜·卡彭特怒怼特朗普政府，因电影《朱诺》音乐侵权</h3>
-            </div>
+            <h2>Pete Hegseth's Peculiar Introduction Sparks War Secretary Buzz</h2>
+            <h3>皮特·赫格塞斯被“宣战部长”称呼引热议</h3>
             <div class="meta-info">
-                <span>Source: Reddit (r/entertainment)</span>
-                <span>Tags: Celebrity</span>
-                <span>Politics</span>
-                <span>Music</span>
-                <span>Controversy</span>
+                <span class="source">Source: Reddit (r/pics)</span>
+                <span class="tags">#Politics #Gaffe #TrumpAdmin</span>
             </div>
-            <div class="content">
-                <p class="en">Singer Sabrina Carpenter publicly condemned the Trump White House for using music from her film 'Juno' in an ICE raids video, calling it "evil and disgusting." The administration reportedly hit back, sparking an "ugly war" over her stance on their "inhumane agenda," intensifying the clash between Hollywood and political figures.</p>
-                <p class="cn">歌手萨布丽娜·卡彭特公开谴责特朗普白宫，因其在一则关于移民及海关执法局（ICE）突袭的视频中使用了她电影《朱诺》的音乐，称此举“邪恶且令人作呕”。据报道，白宫对此进行了回击，引发了一场“丑陋的口水战”，进一步加剧了好莱坞与政界人士之间的冲突。</p>
+            <div class="content-section">
+                <p class="english-content">A recent public appearance saw Pete Hegseth, a prominent media personality, introduced with the title "Secretary of War." This unusual gaffe immediately went viral, sparking a flurry of online discussion and speculation. The title, harking back to a defunct cabinet position, led many to question whether it was a deliberate test balloon for a potential future administration role or simply a significant blunder in protocol. Social media users quickly turned the incident into a meme, highlighting the historical context and the current political climate.</p>
+                <p class="chinese-content">在一次公开露面中，知名媒体人皮特·赫格塞斯被介绍时冠以“宣战部长”的头衔。这一罕见的口误迅速走红，引发了大量的网络讨论和猜测。这个早已废弃的内阁职位名称，让许多人质疑这是否是为未来政府职位进行的刻意试探，或者仅仅是严重的礼仪失误。社交媒体用户很快将此事变成了迷因，强调了其历史背景和当前的政治氛围。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">Many netizens are praising Carpenter for standing up against the administration's controversial policies.</p>
-                <p class="cn">许多网友赞扬卡彭特勇于站出来反对政府的争议性政策。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Is this a joke or a terrifying preview of what's to come? The internet is divided between laughter and concern."</p>
+                <p class="zh">“这是玩笑还是对未来可怕的预演？网友们在笑声和担忧之间摇摆。”</p>
             </div>
         </div>
 
-        <!-- Card 2: Pete Hegseth 'Secretary of War' Introduction -->
+        <!-- Story 2: Tripod Fish -->
         <div class="news-card">
-            <div class="header">
-                <h2>Pete Hegseth Faux Pas: Introduced as 'Secretary of War'</h2>
-                <h3>彼得·赫格塞特乌龙事件：被介绍为“战争部长”引热议</h3>
-            </div>
-            <div class="meta-info">
-                <span>Source: Reddit (r/pics)</span>
-                <span>Tags: Politics</span>
-                <span>Gaffe</span>
-                <span>Media</span>
-                <span>Trump</span>
-            </div>
-            <div class="content">
-                <p class="en">Fox News host Pete Hegseth was controversially introduced at a rally as "Secretary of War," sparking widespread confusion and criticism. This title, reminiscent of a historical cabinet position, fueled speculation and concern about the potential militarization of government roles, drawing immediate backlash across social media platforms.</p>
-                <p class="cn">福克斯新闻主持人彼得·赫格塞特在一场集会上被介绍为“战争部长”，引发了广泛的困惑和批评。这一头衔让人联想到历史上的内阁职位，激起了人们对政府角色潜在军事化的猜测和担忧，在社交媒体上立即引发强烈反弹。</p>
+            <h2>Deep Sea's Marvel: The Enigmatic Tripod Fish</h2>
+            <h3>深海奇观：神秘的三脚鱼</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/interestingasfuck)</span>
+                    <span class="tags">#Science #DeepSea #Nature</span>
+                </div>
+                <p class="english-content">A fascinating creature from the deep, the tripod fish, has captured online attention. This unique marine animal "stands" on the ocean floor using three extraordinarily long, ray-like fins, allowing it to perch above the seabed to detect prey. Its unusual adaptation to the abyssal depths highlights the incredible diversity and specialization of life in Earth's most extreme environments. Images and videos circulating on Reddit showcase its bizarre yet elegant form, mesmerizing viewers with its alien appearance and hunting strategy.</p>
+                <p class="chinese-content">深海中一种迷人的生物——三脚鱼，在网络上引起了广泛关注。这种独特的海洋动物利用三根异常长的鳍，像三脚架一样“站立”在海底，以便悬空探测猎物。它对深渊的这种不寻常适应，凸显了地球极端环境中生命令人难以置信的多样性和专业化。Reddit上流传的图片和视频展示了它奇异而优雅的形态，以其外星般的外观和捕食策略吸引着观众。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">The internet is buzzing with disbelief and concern over the implications of such an introduction.</p>
-                <p class="cn">互联网上充斥着对这种介绍所暗示的意义的难以置信和担忧。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Nature always finds a way to surprise us; this fish looks straight out of a sci-fi movie!"</p>
+                <p class="zh">“大自然总能带给我们惊喜；这条鱼简直像科幻电影里走出来的！”</p>
             </div>
         </div>
 
-        <!-- Card 3: Lilly Wachowski on 'The Matrix' and Fascism -->
+        <!-- Story 3: AI didn't break college -->
         <div class="news-card">
-            <div class="header">
-                <h2>'The Matrix' Co-Director Slams Right-Wing Misappropriation, Citing Fascism</h2>
-                <h3>《黑客帝国》联合导演痛批右翼盗用电影本意，直指法西斯主义</h3>
-            </div>
-            <div class="meta-info">
-                <span>Source: Reddit (r/entertainment)</span>
-                <span>Tags: Film</span>
-                <span>Politics</span>
-                <span>Culture</span>
-                <span>Wachowski</span>
-            </div>
-            <div class="content">
-                <p class="en">Lilly Wachowski, co-director of 'The Matrix,' publicly called out right-wing groups for misinterpreting and appropriating the film's core message. She stated that such actions are a classic tactic of fascism, emphasizing that her iconic work's themes are being twisted for agendas contrary to its original intent.</p>
-                <p class="cn">《黑客帝国》联合导演莉莉·沃卓斯基公开指责右翼团体误读和盗用电影的核心信息。她表示，这种行为是法西斯主义的典型策略，强调她这部标志性作品的主题正在被扭曲，以服务于与其初衷相悖的议程。</p>
+            <h2>AI Exposes Flaws, Doesn't Break College, Says Professor</h2>
+            <h3>教授：AI揭露而非摧毁了大学固有的问题</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#AI #Education #Technology</span>
+                </div>
+                <p class="english-content">A history professor's viral statement suggests that AI hasn't fundamentally "broken" the college system, but rather exposed pre-existing systemic flaws. The argument posits that the challenges posed by AI, such as concerns over plagiarism and critical thinking, merely highlight areas where traditional educational models were already weak or outdated. This perspective encourages a reevaluation of teaching methods and curriculum design, urging institutions to adapt to new technologies by fostering skills that AI cannot easily replicate, rather than resisting its inevitable integration.</p>
+                <p class="chinese-content">一位历史教授的观点走红网络，他认为人工智能并未从根本上“摧毁”大学教育体系，而是揭露了其固有的系统性缺陷。该论点指出，AI带来的挑战，如对抄袭和批判性思维的担忧，仅仅突显了传统教育模式本身薄弱或过时的地方。这一观点鼓励重新评估教学方法和课程设计，敦促教育机构适应新技术，培养AI难以复制的技能，而不是抗拒其必然的融入。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">Fans largely support Wachowski, asserting that creators have the right to define their work's meaning.</p>
-                <p class="cn">粉丝们普遍支持沃卓斯基，认为创作者有权定义自己作品的意义。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"A harsh but necessary truth; maybe this is the wake-up call education needs."</p>
+                <p class="zh">“虽然刺耳但却是必要的真相；也许这正是教育所需的警钟。”</p>
             </div>
         </div>
 
-        <!-- Card 4: Jimmy Kimmel's Wife on Trump-Related Family Strain -->
+        <!-- Story 4: Google will start building data centers in space -->
         <div class="news-card">
-            <div class="header">
-                <h2>Kimmel's Wife Reveals Family Rifts Over Trump Votes</h2>
-                <h3>吉米·坎摩尔妻子自曝：因特朗普投票与家人关系破裂</h3>
-            </div>
-            <div class="meta-info">
-                <span>Source: Reddit (r/entertainment)</span>
-                <span>Tags: Celebrity</span>
-                <span>Politics</span>
-                <span>Family</span>
-                <span>Social Issues</span>
-            </div>
-            <div class="content">
-                <p class="en">Molly McNearney, Jimmy Kimmel's wife and show producer, shared a deeply personal account of losing family relationships due to their votes for Donald Trump. Her revelation highlights the intense political polarization affecting even close familial bonds, resonating with many Americans experiencing similar divides.</p>
-                <p class="cn">吉米·坎摩尔的妻子兼节目制作人莫莉·麦克尼尔尼透露，她因家人投票给唐纳德·特朗普而失去了亲密的家庭关系。她的这番话突显了政治两极分化对亲密家庭纽带的影响，引起了许多经历类似隔阂的美国人的共鸣。</p>
+            <h2>Google Aims for the Stars: Space Data Centers by 2027</h2>
+            <h3>谷歌剑指星辰：2027年将在太空建造数据中心</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#Google #SpaceTech #AI #Future</span>
+                </div>
+                <p class="english-content">Sundar Pichai, CEO of Google, has announced an ambitious plan to begin building sun-powered data centers in space by 2027. This futuristic initiative aims to leverage the consistent solar energy and vacuum of space for more efficient and powerful computing, potentially revolutionizing AI and cloud services. While details remain scarce, the announcement has ignited excitement and skepticism across the tech world, raising questions about feasibility, cost, and the environmental impact of launching such infrastructure into orbit. This bold move signals a new frontier in tech development and resource utilization.</p>
+                <p class="chinese-content">谷歌CEO桑达尔·皮查伊宣布了一项宏伟计划：到2027年，将在太空开始建造由太阳能驱动的数据中心。这项未来主义的举措旨在利用持续的太阳能和太空真空环境，实现更高效、更强大的计算，可能彻底改变人工智能和云计算服务。尽管具体细节尚不明确，这一宣布在科技界引发了兴奋和质疑，人们对可行性、成本以及将此类基础设施送入轨道的环境影响提出了疑问。这一大胆举动标志着科技发展和资源利用的新前沿。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">This story sparks discussions about the toll political differences take on personal relationships and family unity.</p>
-                <p class="cn">这个故事引发了关于政治分歧对人际关系和家庭团结造成影响的讨论。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"From search engines to space stations, Google is truly aiming for global—and galactic—domination!"</p>
+                <p class="zh">“从搜索引擎到空间站，谷歌真是瞄准了全球乃至银河系的霸主地位！”</p>
             </div>
         </div>
 
-        <!-- Card 5: Jada Pinkett Smith's Alleged Threat -->
+        <!-- Story 5: Amazon employees sign open letter warning the company’s AI -->
         <div class="news-card">
-            <div class="header">
-                <h2>Jada Pinkett Smith Accused of Threatening Will's Friend Amid $3M Claim</h2>
-                <h3>贾达·萍克特·史密斯被控威胁威尔·史密斯的朋友，牵涉300万美元索赔</h3>
-            </div>
-            <div class="meta-info">
-                <span>Source: Reddit (r/entertainment)</span>
-                <span>Tags: Celebrity</span>
-                <span>Drama</span>
-                <span>Legal</span>
-                <span>Gossip</span>
-            </div>
-            <div class="content">
-                <p class="en">Jada Pinkett Smith is facing claims she threatened one of Will Smith's friends, allegedly telling him he'd "catch a bullet" if he continued spreading her "personal business." This accusation is part of a larger $3 million complaint, further entangling the celebrity couple in fresh controversy and legal woes.</p>
-                <p class="cn">贾达·萍克特·史密斯面临指控，称她威胁了威尔·史密斯的一位朋友，据称警告他如果继续散布她的“私人事务”就会“吃一颗子弹”。这项指控是300万美元索赔案的一部分，这使得这对明星夫妇再次陷入新的争议和法律困境。</p>
+            <h2>Amazon Employees Warn: AI Risks Democracy, Jobs, and Earth</h2>
+            <h3>亚马逊员工发出警告：AI恐危害民主、就业与地球</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#Amazon #AIEthics #EmployeeAdvocacy</span>
+                </div>
+                <p class="english-content">Over a thousand Amazon employees have co-signed an open letter expressing grave concerns about the company's AI development. The letter warns that Amazon's artificial intelligence initiatives "will do staggering damage to democracy, our jobs, and the earth," citing potential for misuse, job displacement, and significant energy consumption. This internal dissent highlights growing ethical debates within major tech firms regarding AI's societal impact and the responsibility of corporations in its deployment. It puts pressure on Amazon to address these concerns and potentially adjust its AI strategy.</p>
+                <p class="chinese-content">超过一千名亚马逊员工联署一封公开信，表达了对公司人工智能发展的严重担忧。该信警告称，亚马逊的人工智能计划“将对民主、我们的工作和地球造成惊人的破坏”，理由是可能被滥用、工作岗位流失和巨大的能源消耗。这种内部异议凸显了大型科技公司内部日益增长的伦理辩论，涉及人工智能的社会影响以及企业在部署中的责任。它给亚马逊带来了压力，要求其解决这些担忧并可能调整其人工智能战略。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">Social media is ablaze with reactions, with many questioning the Smiths' personal conduct and relationship dynamics.</p>
-                <p class="cn">社交媒体上充斥着各种反应，许多人质疑史密斯夫妇的个人行为和关系动态。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Even insiders are sounding the alarm; it's time for tech giants to listen."</p>
+                <p class="zh">“连内部人士都在敲响警钟；科技巨头是时候倾听了。”</p>
             </div>
         </div>
 
-        <!-- Card 6: The Enigmatic Tripod Fish -->
+        <!-- Story 6: Rise of deepfake pornography in schools -->
         <div class="news-card">
-            <div class="header">
-                <h2>Deep Sea Marvel: The Mysterious Tripod Fish That Stands on Fins</h2>
-                <h3>深海奇观：神秘的“三脚鱼”以鳍立足海底</h3>
-            </div>
-            <div class="meta-info">
-                <span>Source: Reddit (r/interestingasfuck)</span>
-                <span>Tags: Nature</span>
-                <span>Science</span>
-                <span>Ocean</span>
-                <span>Discovery</span>
-            </div>
-            <div class="content">
-                <p class="en">A fascinating deep-sea creature, the tripod fish, has captured public imagination with its unique ability to "stand" on the ocean floor using three elongated fins. This adaptation allows it to patiently wait for prey in the abyssal depths, showcasing the incredible biodiversity of unexplored marine environments.</p>
-                <p class="cn">一种迷人的深海生物——三脚鱼，因其独特的能力而吸引了公众的想象力：它能利用三根细长的鱼鳍“站立”在海床上。这种适应性使它能够在大洋深处耐心等待猎物，展示了未被探索的海洋环境中令人难以置信的生物多样性。</p>
+            <h2>Deepfake Pornography's Alarming Rise in Schools: A Digital Crisis</h2>
+            <h3>校园深度伪造色情泛滥：数字时代的危机</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#Deepfake #Cybersecurity #ChildSafety #TechnologyEthics</span>
+                </div>
+                <p class="english-content">The proliferation of deepfake pornography in schools, often created using "nudify" apps, has become a disturbing trend, with reports of hundreds of teachers encountering such images made by pupils, frequently of their peers. The emotional fallout for victims, including one girl who reportedly vomited from horror, is immense. This crisis underscores the urgent need for better digital literacy, stricter regulations for AI image generation, and robust support systems for young victims. It highlights the darker side of accessible AI technology and its potential for severe harm.</p>
+                <p class="chinese-content">在学校中，通过“裸体化”应用程序制作的深度伪造色情内容的泛滥已成为一种令人不安的趋势，据报道，数百名教师遇到过学生制作的、常以同学为对象的此类图片。受害者遭受的心理打击巨大，其中一名女孩据称因恐惧而呕吐。这场危机凸显了迫切需要提高数字素养、对AI图像生成进行更严格的监管，并为年轻受害者提供强有力的支持系统。它揭示了可获取AI技术更阴暗的一面及其造成严重伤害的潜力。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">People are amazed by nature's ingenuity, sharing awe and wonder at this bizarre deep-sea inhabitant.</p>
-                <p class="cn">人们对大自然的巧夺天工感到惊叹，纷纷表达对这种奇异深海生物的敬畏和好奇。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"This is absolutely horrifying and demands immediate action from tech companies and lawmakers."</p>
+                <p class="zh">“这太可怕了，科技公司和立法者必须立即采取行动。”</p>
             </div>
         </div>
 
-        <!-- Card 7: Vecna's Ozempic Transformation in Stranger Things S5 -->
+        <!-- Story 7: OpenAI Loses Discovery Battle -->
         <div class="news-card">
-            <div class="header">
-                <h2>'Stranger Things 5': Vecna's Ozempic Diet Sparks Fan Theories</h2>
-                <h3>《怪奇物语5》维克那“奥司马”瘦身引热议，剧迷脑洞大开</h3>
-            </div>
-            <div class="meta-info">
-                <span>Source: Reddit (r/shittymoviedetails)</span>
-                <span>Tags: Pop Culture</span>
-                <span>TV Show</span>
-                <span>Humor</span>
-                <span>Stranger Things</span>
-            </div>
-            <div class="content">
-                <p class="en">A humorous fan theory suggests that Vecna, the antagonist in 'Stranger Things,' underwent an "Ozempic epidemic" transformation for Season 5, drastically changing his appearance. This light-hearted take on the character's new look links pop culture with current trends, sparking widespread amusement among fans.</p>
-                <p class="cn">一个有趣的粉丝理论认为，《怪奇物语》中的反派维克那在第五季中经历了“奥司马（Ozempic）疫情”式的转变，外貌发生了巨大变化。这种对角色新造型的轻松解读将流行文化与当前趋势联系起来，在粉丝中引发了广泛的娱乐。</p>
+            <h2>OpenAI Faces Billions in Lawsuits After Losing Discovery Battle</h2>
+            <h3>OpenAI在取证战中败诉，或面临数十亿美元索赔</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#OpenAI #Copyright #AILawsuit #LegalTech</span>
+                </div>
+                <p class="english-content">OpenAI has suffered a significant setback in its ongoing legal battles with authors, losing a key discovery battle that could expose it to billions of dollars in damages. The ruling forces OpenAI to disclose information regarding its training data and processes, crucial for determining if it knowingly infringed on copyrighted material. This development marks a major turning point in the legal landscape of AI, setting precedents for how intellectual property rights will be defended in the age of generative AI. The outcome will have far-reaching implications for content creators and AI developers alike.</p>
+                <p class="chinese-content">OpenAI在与作家们的持续法律纠纷中遭遇重大挫折，在一次关键的取证战中败诉，这可能使其面临数十亿美元的赔偿。该裁决迫使OpenAI披露其训练数据和流程的信息，这对于确定其是否故意侵犯版权至关重要。这一发展标志着人工智能法律领域的一个重要转折点，为生成式人工智能时代如何保护知识产权设定了先例。结果将对内容创作者和AI开发者产生深远影响。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">Fans are chuckling at the meta-commentary, enjoying the blend of show lore and real-world trends.</p>
-                <p class="cn">粉丝们对这种元评论乐此不疲，享受着剧集背景知识和现实世界趋势的融合。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"This is huge for artists and creators; finally, some accountability for AI models!"</p>
+                <p class="zh">“这对艺术家和创作者来说意义重大；AI模型终于要承担责任了！”</p>
             </div>
         </div>
 
-        <!-- Card 8: The Beautiful 'Snow Bear' Animation -->
+        <!-- Story 8: Guillermo del Toro Says ‘F— AI’ -->
         <div class="news-card">
-            <div class="header">
-                <h2>'Snow Bear': An 11,000-Drawing Animation Captivates Audiences</h2>
-                <h3>《雪熊》：11000幅手绘动画，美轮美奂引人入胜</h3>
-            </div>
-            <div class="meta-info">
-                <span>Source: Reddit (r/animation)</span>
-                <span>Tags: Art</span>
-                <span>Animation</span>
-                <span>Creativity</span>
-                <span>Viral</span>
-            </div>
-            <div class="content">
-                <p class="en">A stunning animation titled "Snow Bear," created from an astounding 11,000 individual drawings, has gone viral for its intricate artistry and heartwarming narrative. This labor of love showcases the immense talent and dedication required in traditional animation, earning widespread admiration online.</p>
-                <p class="cn">一部名为《雪熊》的精美动画，由惊人的11000幅独立手绘图组成，因其精湛的艺术性和温暖人心的叙事而迅速走红。这部充满爱意的作品展示了传统动画所需的巨大才华和奉献精神，在线上赢得了广泛赞誉。</p>
+            <h2>Guillermo del Toro Declares "F--- AI" in Passionate Gotham Awards Speech</h2>
+            <h3>吉尔莫·德尔·托罗在哥谭奖颁奖礼上激情怒斥AI</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/entertainment, r/technology)</span>
+                    <span class="tags">#GuillermoDelToro #AI #FilmIndustry #ArtisticIntegrity</span>
+                </div>
+                <p class="english-content">Acclaimed director Guillermo del Toro made headlines for his fiery "F--- AI" declaration while accepting a Gotham Award for his film 'Frankenstein.' He passionately advocated for human artistry, stating that it "shines on every single frame" of his work, and implicitly, all great cinema. His strong stance reflects growing concerns within Hollywood and the broader creative industries about AI's role in art, intellectual property, and job security. Del Toro's speech resonated widely, becoming a rallying cry for those who believe human creativity is irreplaceable.</p>
+                <p class="chinese-content">著名导演吉尔莫·德尔·托罗在领取哥谭奖时，为他的电影《弗兰肯斯坦》发表了激烈的“F--- AI”宣言，登上了头条。他热情地倡导人类艺术性，声称它“在影片的每一帧中闪耀”，并暗示所有伟大的电影都应如此。他坚定的立场反映了好莱坞和更广泛的创意产业中对AI在艺术、知识产权和就业保障方面作用日益增长的担忧。德尔·托罗的演讲引起广泛共鸣，成为那些认为人类创造力不可替代者的号召。</p>
             </div>
             <div class="netizen-vibe">
-                <h4>Netizen Vibe:</h4>
-                <p class="en">Viewers are deeply impressed by the artistry and effort, calling it a true masterpiece of animation.</p>
-                <p class="cn">观众们对艺术性和投入深感敬佩，称其为动画的真正杰作。</p>
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Finally, someone with a platform saying what many artists are feeling. Human creativity over algorithms!"</p>
+                <p class="zh">“终于有有影响力的人说出了许多艺术家的心声。人类创造力胜过算法！”</p>
             </div>
         </div>
+
+        <!-- Story 9: Half of the US Now Requires You to Upload Your ID or Scan Your Face to Watch Porn -->
+        <div class="news-card">
+            <h2>Porn Access Tightens: Half of US Requires ID Verification</h2>
+            <h3>色情内容访问收紧：美国半数州要求身份验证</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#DigitalPrivacy #AgeVerification #InternetRegulation #USLaw</span>
+                </div>
+                <p class="english-content">As of November 30th, with Missouri's new age verification law, half of the U.S. now requires users to upload an ID or scan their face to access pornographic content. This legislative wave aims to protect minors but has sparked significant debate around digital privacy, data security, and the practicality of enforcement. Critics argue that such laws could lead to privacy breaches and disproportionately affect certain user groups, while proponents emphasize child protection. The broad implementation signifies a major shift in internet regulation and personal data collection practices.</p>
+                <p class="chinese-content">截至11月30日，随着密苏里州新年龄验证法的生效，美国半数州现在要求用户上传身份证明或进行面部扫描才能访问色情内容。这一立法浪潮旨在保护未成年人，但在数字隐私、数据安全和执法实用性方面引发了激烈辩论。批评者认为，此类法律可能导致隐私泄露并对某些用户群体产生不成比例的影响，而支持者则强调儿童保护。其广泛实施标志着互联网监管和个人数据收集实践的重大转变。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"A slippery slope for privacy or a necessary evil? The debate rages on."</p>
+                <p class="zh">“这是隐私的滑坡还是必要的恶？争论仍在继续。”</p>
+            </div>
+        </div>
+
+        <!-- Story 10: Sabrina Carpenter Slams Trump’s White House for Using ‘Juno’ -->
+        <div class="news-card">
+            <h2>Sabrina Carpenter Blasts Trump White House Over "Juno" Usage</h2>
+            <h3>萨布丽娜·卡彭特怒斥特朗普白宫滥用电影《朱诺》</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/entertainment)</span>
+                    <span class="tags">#SabrinaCarpenter #Politics #Copyright #CelebrityNews</span>
+                </div>
+                <p class="english-content">Pop star Sabrina Carpenter has fiercely condemned the Trump White House for using her song from the film 'Juno' in an ICE raids video, labeling it "evil and disgusting" and demanding to be disassociated from their "inhumane agenda." Her strong public statement highlights the ongoing tension between artists and political campaigns over intellectual property and ideological alignment. The incident quickly became a flashpoint, drawing attention to artists' rights and the controversial use of pop culture in political messaging, especially when it clashes with personal values.</p>
+                <p class="chinese-content">流行歌手萨布丽娜·卡彭特强烈谴责特朗普白宫在ICE突袭视频中使用了她电影《朱诺》中的歌曲，称其“邪恶且令人厌恶”，并要求将其与“不人道的议程”撇清关系。她强硬的公开声明凸显了艺术家与政治竞选活动之间在知识产权和意识形态一致性方面持续的紧张关系。这一事件迅速成为焦点，引起了对艺术家权利以及政治宣传中流行文化争议性使用的关注，尤其是在与个人价值观冲突时。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Good for her for speaking out! Artists have every right to protect their work and image from political appropriation."</p>
+                <p class="zh">“她敢于发声，干得好！艺术家有权保护自己的作品和形象不被政治挪用。”</p>
+            </div>
+        </div>
+
+        <!-- Story 11: The Matrix co-director Lilly Wachowski calls out right-wing appropriation -->
+        <div class="news-card">
+            <h2>Lilly Wachowski Condemns Right-Wing Misappropriation of 'The Matrix'</h2>
+            <h3>莉莉·沃卓斯基谴责右翼盗用《黑客帝国》深层含义</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/entertainment)</span>
+                    <span class="tags">#TheMatrix #CultureWar #FilmMaking #SocialCommentary</span>
+                </div>
+                <p class="english-content">Lilly Wachowski, co-director of 'The Matrix' series, has publicly called out right-wing groups for appropriating the film's symbolism, stating, "This is what fascism does." Her remarks underscore the creators' intent for the film's themes, particularly regarding personal liberation and challenging established systems, which contrast sharply with the interpretations used by some political factions. This intervention reignites debates about authorial intent versus audience reception, and how cultural works can be reinterpreted or distorted to serve opposing ideologies, especially in polarized political landscapes.</p>
+                <p class="chinese-content">《黑客帝国》系列的联合导演莉莉·沃卓斯基公开谴责右翼团体盗用电影象征意义的行为，她指出“这就是法西斯主义的做法”。她的言论强调了创作者对电影主题的意图，特别是关于个人解放和挑战既定体系，这与某些政治派别所使用的解读形成了鲜明对比。这次介入重新点燃了关于作者意图与观众接受度之间的辩论，以及文化作品如何被重新解读或歪曲以服务对立意识形态，尤其是在两极分化的政治格局中。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Creators setting the record straight. It's important to remember the original message behind iconic art."</p>
+                <p class="zh">“创作者们澄清事实。重要的是要记住标志性艺术背后的原始信息。”</p>
+            </div>
+        </div>
+
+        <!-- Story 12: Jada Pinkett Smith Threatens Friend of Will Smith -->
+        <div class="news-card">
+            <h2>Jada Pinkett Smith's Alleged Threat to Will's Friend Revealed in Lawsuit</h2>
+            <h3>贾达·萍克特·史密斯被爆曾威胁威尔的朋友</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/entertainment)</span>
+                    <span class="tags">#CelebrityDrama #JadaPinkettSmith #WillSmith #LegalBattle</span>
+                </div>
+                <p class="english-content">New details from a $3 million complaint claim Jada Pinkett Smith told a friend of her husband, Will Smith, that he would "catch a bullet" if he continued to disclose her "personal business." This allegation adds another layer of controversy to the Smith family's already public and complex personal life. The legal filing suggests heightened tensions and underscores the intense scrutiny faced by high-profile celebrities. It's sparking renewed discussion about the boundaries of privacy and the challenges of maintaining relationships within the entertainment industry's spotlight.</p>
+                <p class="chinese-content">一份价值300万美元的诉状披露的新细节声称，贾达·萍克特·史密斯告诉她丈夫威尔·史密斯的一位朋友，如果他继续泄露她的“私事”，他将“吃一颗子弹”。这一指控为史密斯家族本已公开且复杂的个人生活增添了新的争议。法律文件暗示了日益紧张的关系，并凸显了知名名人面临的巨大审视。它重新引发了关于隐私界限以及在娱乐界聚光灯下维持关系的挑战的讨论。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"The drama just keeps unfolding with this family; it's a never-ending saga."</p>
+                <p class="zh">“这个家庭的戏剧还在不断上演；真是没完没了的传奇。”</p>
+            </div>
+        </div>
+
+        <!-- Story 13: Tupac's alleged killer claims P Diddy ordered $1 million hit -->
+        <div class="news-card">
+            <h2>Tupac Killer Alleges P Diddy Ordered $1M Hit in Newly Uncovered Audio</h2>
+            <h3>图帕克被指控的杀手声称吹牛老爹曾悬赏百万美金</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/entertainment)</span>
+                    <span class="tags">#Tupac #PDiddy #TrueCrime #HipHopHistory</span>
+                </div>
+                <p class="english-content">In newly uncovered audio, Tupac Shakur's alleged killer reportedly claims that Sean "P Diddy" Combs ordered a $1 million hit on the legendary rapper. This explosive allegation, if proven true, would send shockwaves through the music industry and reignite one of hip-hop's most enduring mysteries. Coming decades after Tupac's unsolved murder, the recording adds a dramatic new twist to the ongoing investigation and public fascination with the case. It promises to reopen old wounds and shed light on long-held theories surrounding the iconic artist's death.</p>
+                <p class="chinese-content">在新曝光的音频中，据称图帕克·沙库尔的杀手声称肖恩·“吹牛老爹”·库姆斯曾悬赏100万美元暗杀这位传奇说唱歌手。这一爆炸性指控，如果被证实，将震惊音乐界，并重新点燃嘻哈音乐界最持久的谜团之一。在图帕克未解的谋杀案发生几十年后，这段录音为正在进行的调查和公众对案件的迷恋增添了戏剧性的新转折。它预示着旧伤口的重新揭开，并可能揭示围绕这位标志性艺术家死亡的长期理论。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Decades later and still new revelations. This case just won't die, and the implications are massive."</p>
+                <p class="zh">“几十年后仍有新发现。这起案件不会平息，影响是巨大的。”</p>
+            </div>
+        </div>
+
+        <!-- Story 14: Dave Coulier Diagnosed With Tongue Cancer -->
+        <div class="news-card">
+            <h2>'Full House' Star Dave Coulier Diagnosed with Tongue Cancer</h2>
+            <h3>《欢乐满屋》男星戴夫·库利尔确诊舌癌</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/entertainment)</span>
+                    <span class="tags">#CelebrityHealth #DaveCoulier #FullHouse #CancerAwareness</span>
+                </div>
+                <p class="english-content">Beloved 'Full House' actor Dave Coulier, known for his role as Uncle Joey, has announced he's been diagnosed with tongue cancer, just seven months after successfully battling lymphoma. He clarified that the two cancers are "totally unrelated." This news has saddened fans, who are sending an outpouring of support. Coulier's transparency about his health challenges brings attention to cancer awareness and the importance of early detection, while also reminding the public of the personal struggles faced by celebrities beyond the spotlight.</p>
+                <p class="chinese-content">备受喜爱的《欢乐满屋》演员戴夫·库利尔，以其“乔伊叔叔”的角色闻名，宣布他已被诊断出患有舌癌，而这距离他成功对抗淋巴瘤仅七个月。他澄清说这两种癌症“完全不相关”。这一消息令粉丝们感到难过，他们纷纷送上支持。库利尔对自身健康挑战的坦诚，提高了人们对癌症意识和早期检测重要性的关注，同时也提醒公众名人光鲜背后所面临的个人挣扎。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Wishing Uncle Joey a swift and full recovery. So tough to go through this twice."</p>
+                <p class="zh">“祝愿乔伊叔叔早日康复。两次面对这样的挑战真是太艰难了。”</p>
+            </div>
+        </div>
+
+        <!-- Story 15: An Older Lady Takes Joy In Watching A Skater Prefect His Landing In A Heart Warming Moment -->
+        <div class="news-card">
+            <h2>Heartwarming Moment: Elderly Lady Finds Joy in Skater's Dedication</h2>
+            <h3>暖心瞬间：老妇人因滑板少年的专注而欣喜</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/BlackPeopleofReddit)</span>
+                    <span class="tags">#Wholesome #Community #Skateboarding #FeelGood</span>
+                </div>
+                <p class="english-content">A truly heartwarming scene has gone viral, capturing an older lady observing a young skater intently as he perfects his landing. Her visible joy and quiet appreciation for his dedication transcend generational divides, offering a beautiful moment of shared humanity. The video emphasizes the simple pleasures of watching someone pursue their passion and the unexpected connections that can form between strangers. It serves as a gentle reminder to appreciate the small, positive interactions that enrich our daily lives, fostering a sense of community and mutual respect.</p>
+                <p class="chinese-content">一个真正暖心的场景在网络上疯传，捕捉到一位老妇人专注地观察一位年轻滑板少年反复练习直至完美落地。她脸上清晰可见的喜悦和对少年专注的默默欣赏，超越了代际差异，呈现出一个美好的人性共通时刻。这段视频强调了看着他人追求热情所带来的简单乐趣，以及陌生人之间可能形成的意想不到的联系。它温柔地提醒我们去欣赏那些丰富日常生活的细小而积极的互动，培养社区意识和相互尊重。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"This is the kind of positivity we need more of online. A beautiful connection across generations."</p>
+                <p class="zh">“这正是我们网络上需要更多正能量。跨越代际的美好连接。”</p>
+            </div>
+        </div>
+
+        <!-- Story 16: TIL that the designer of the first shopping malls had envisioned them as mixed-use facilities -->
+        <div class="news-card">
+            <h2>Malls' Original Vision: Mixed-Use Hubs, Not Just Shopping Havens</h2>
+            <h3>购物中心最初愿景：多功能社区而非单一购物天堂</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/todayilearned)</span>
+                    <span class="tags">#UrbanPlanning #History #Architecture #Community</span>
+                </div>
+                <p class="english-content">A popular "Today I Learned" post revealed that the designer of the first shopping malls envisioned them as far more than just retail spaces. They were conceived as mixed-use facilities, integrating libraries, apartments, green spaces, post offices, and medical services alongside commercial stores. This original utopian vision aimed to create self-contained community hubs, a stark contrast to many modern malls that often struggle with declining foot traffic and solely commercial identities. The revelation sparks reflection on how urban planning evolved and the potential for reviving these original, more holistic community-oriented concepts.</p>
+                <p class="chinese-content">一则热门的“今日我学到”帖子揭示，最初的购物中心设计师设想它们远不止是零售空间。它们被构想为多功能设施，将图书馆、公寓、绿地、邮局和医疗服务与商业店铺相结合。这种最初的乌托邦式愿景旨在创建自给自足的社区中心，与许多现代购物中心形成鲜明对比，后者常因客流量下降和单一商业身份而挣扎。这一发现引发了对城市规划如何演变以及复兴这些原始、更全面的社区导向概念潜力的思考。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"Imagine if malls had stuck to this vision; they'd be thriving community centers instead of empty shells!"</p>
+                <p class="zh">“想象一下，如果购物中心坚持这个愿景；它们将是繁荣的社区中心，而不是空壳！”</p>
+            </div>
+        </div>
+
+        <!-- Story 17: Ms. Rachel named finalist for 'Antisemite of the Year' amid Gaza advocacy -->
+        <div class="news-card">
+            <h2>Ms. Rachel Becomes 'Antisemite of the Year' Finalist Amid Gaza Advocacy</h2>
+            <h3>儿童节目明星蕾切尔女士因加沙倡议入围“年度反犹分子”</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/nottheonion)</span>
+                    <span class="tags">#MsRachel #Controversy #Gaza #FreeSpeech #PopCulture</span>
+                </div>
+                <p class="english-content">Children's entertainer Ms. Rachel, widely known for her educational YouTube content, has been controversially named a finalist for "Antisemite of the Year" by a watchdog group, reportedly due to her advocacy regarding Gaza. This nomination has ignited fierce debate online, with many expressing shock and outrage that a beloved figure for toddlers is being embroiled in such a polarizing political label. The incident highlights the intense emotional and political divisions surrounding the Israeli-Palestinian conflict, demonstrating how even non-political figures can become targets amid heightened global tensions.</p>
+                <p class="chinese-content">儿童娱乐明星蕾切尔女士，以其教育性YouTube内容广受喜爱，却被一个监督组织争议性地提名为“年度反犹分子”决赛选手，据称是因其对加沙的倡议。这一提名在网络上引发了激烈辩论，许多人对一个备受幼儿喜爱的公众人物被卷入如此两极分化的政治标签表示震惊和愤怒。这一事件凸显了围绕以巴冲突的强烈情感和政治分歧，展示了即使是非政治人物在全球紧张局势加剧时也可能成为攻击目标。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"This is beyond absurd; dragging a children's educator into this political quagmire is a new low."</p>
+                <p class="zh">“这简直荒谬透顶；把一个儿童教育家拖入政治泥潭，真是刷新了下限。”</p>
+            </div>
+        </div>
+
+        <!-- Story 18: Miley Cyrus and Maxx Morando are engaged after 4 years of dating -->
+        <div class="news-card">
+            <h2>Miley Cyrus and Maxx Morando Announce Engagement After Four Years</h2>
+            <h3>麦莉·赛勒斯与马克斯·莫兰多交往四年后订婚</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/entertainment)</span>
+                    <span class="tags">#MileyCyrus #CelebrityEngagement #PopStar #RelationshipGoals</span>
+                </div>
+                <p class="english-content">Pop superstar Miley Cyrus and musician Maxx Morando have officially announced their engagement after four years of dating. The news has delighted fans globally, who have followed their low-key but steady relationship. This milestone marks a new chapter for Cyrus, known for her evolving artistry and personal journey, and signals a continuation of her more private and stable public persona. The couple's engagement adds to the roster of celebrity pairings, sparking congratulations and well wishes from across the entertainment world.</p>
+                <p class="chinese-content">流行巨星麦莉·赛勒斯和音乐家马克斯·莫兰多在交往四年后正式宣布订婚。这一消息令全球粉丝欣喜不已，他们一直关注着两人低调而稳定的关系。这个里程碑标志着赛勒斯艺术生涯和个人旅程的新篇章，并预示着她更为私密和稳定的公众形象的延续。这对情侣的订婚增添了名人配对的名单，引发了来自娱乐界的祝贺和美好祝愿。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"So happy for Miley! She's found her peace and happiness. Congrats to the lovely couple!"</p>
+                <p class="zh">“为麦莉感到高兴！她找到了自己的平静和幸福。恭喜这对可爱的夫妇！”</p>
+            </div>
+        </div>
+
+        <!-- Story 19: Subaru Owners Are Ticked About In-Car Pop-Up Ads for SiriusXM -->
+        <div class="news-card">
+            <h2>Subaru Owners Outraged by In-Car Pop-Up Ads for SiriusXM</h2>
+            <h3>斯巴鲁车主对车载SiriusXM弹窗广告表示愤怒</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#Subaru #SiriusXM #InCarTech #ConsumerRights</span>
+                </div>
+                <p class="english-content">Subaru owners are expressing significant frustration over the appearance of unexpected pop-up advertisements for SiriusXM on their in-car infotainment systems. This unwelcome intrusion is sparking debate about data privacy, ownership of vehicle technology, and the future of in-car user experience. Many feel that having ads pushed directly into their personal vehicles crosses a line, especially after purchasing the car outright. The incident highlights a growing tension between automakers seeking new revenue streams and consumers demanding a ad-free and privacy-respecting driving experience.</p>
+                <p class="chinese-content">斯巴鲁车主对车载信息娱乐系统上意外出现的SiriusXM弹窗广告表达了强烈不满。这种不受欢迎的侵扰引发了关于数据隐私、车辆技术所有权以及车载用户体验未来的争论。许多人认为，在购买汽车后仍被直接推送广告，这越过了底线。这一事件凸显了汽车制造商寻求新收入来源与消费者要求无广告且尊重隐私的驾驶体验之间的日益紧张关系。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"This is unacceptable! We buy cars, not billboards on wheels. Companies need to respect consumer space."</p>
+                <p class="zh">“这不可接受！我们买的是汽车，不是带轮子的广告牌。公司需要尊重消费者空间。”</p>
+            </div>
+        </div>
+
+        <!-- Story 20: Baldur's Gate 3 still in Steam's top 20 after 2 years -->
+        <div class="news-card">
+            <h2>Baldur's Gate 3 Dominates Steam Charts Two Years Post-Launch</h2>
+            <h3>《博德之门3》发布两年后仍雄踞Steam畅销榜</h3>
+            <div class="content-section">
+                <div class="meta-info">
+                    <span class="source">Source: Reddit (r/technology)</span>
+                    <span class="tags">#BaldursGate3 #Gaming #RPG #Steam #LarianStudios</span>
+                </div>
+                <p class="english-content">Two years after its release, Larian Studios' critically acclaimed RPG, Baldur's Gate 3, continues to hold a strong position in Steam's top 20 games. Larian CEO Swen Vincke ended 2025 by celebrating the game's enduring success and praising the vibrant modding community, which has contributed over 10,000 mods and amassed 350 million downloads. This longevity is a testament to the game's depth, replayability, and the powerful impact of community-driven content, setting a high bar for future RPGs and live-service titles.</p>
+                <p class="chinese-content">Larian Studios备受赞誉的角色扮演游戏《博德之门3》在发布两年后，仍然在Steam的20大游戏中占据重要地位。Larian首席执行官斯文·文克在2025年底庆祝了游戏的持久成功，并赞扬了活跃的模组社区，该社区贡献了超过10,000个模组，下载量达到3.5亿次。这种持久性证明了游戏的深度、可重玩性以及社区驱动内容的强大影响力，为未来的RPG和长期运营游戏树立了高标准。</p>
+            </div>
+            <div class="netizen-vibe">
+                <strong>Netizen Vibe:</strong>
+                <p class="en">"A true masterpiece that keeps on giving! The modding community truly makes this game legendary."</p>
+                <p class="zh">“真正持续发光发热的杰作！模组社区确实让这款游戏成为了传奇。”</p>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
