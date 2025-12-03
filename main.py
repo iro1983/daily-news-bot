@@ -7,34 +7,67 @@ import time
 # ================= 配置区 =================
 api_key = os.environ.get("GOOGLE_API_KEY")
 
-# ================= 1. 智能模型选择 =================
+# ================= 1. 动态获取模型 (绝对防 404) =================
 def get_best_model():
-    if not api_key: return None
+    if not api_key: 
+        print("❌ 错误：未找到 API Key")
+        return None
+    
     genai.configure(api_key=api_key)
     try:
-        # 必须用 Flash，因为这次数据量更大，Flash 的长文本处理能力最适合
-        all_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        for m in all_models:
-            if 'flash' in m and '1.5' in m: return genai.GenerativeModel(m)
-        return genai.GenerativeModel('gemini-1.5-flash')
-    except: return None
+        print("🔍 正在扫描你的可用模型列表...")
+        # 获取所有支持文本生成的模型对象
+        model_list = list(genai.list_models())
+        
+        # 筛选出支持 generateContent 的模型名称
+        supported_models = [m.name for m in model_list if 'generateContent' in m.supported_generation_methods]
+        
+        if not supported_models:
+            print("❌ 严重错误：Google 返回的模型列表为空！")
+            return None
+            
+        print(f"📋 你的账号可用模型: {supported_models}")
 
-# ================= 2. 深度数据采集 (加大采集量) =================
+        # --- 优先级匹配策略 (只用列表里真实存在的名字) ---
+        
+        # 策略 1: 优先找 Flash 系列 (速度快，支持长文)
+        # 只要名字里带 'flash'，不管它是 1.5 还是 2.5，直接用
+        for name in supported_models:
+            if 'flash' in name.lower():
+                print(f"✅ 自动选中 Flash 模型: {name}")
+                return genai.GenerativeModel(name)
+        
+        # 策略 2: 如果没有 Flash，找 Pro 系列
+        for name in supported_models:
+            if 'pro' in name.lower():
+                print(f"✅ 自动选中 Pro 模型: {name}")
+                return genai.GenerativeModel(name)
+        
+        # 策略 3: 实在没有，就用列表里的第一个 (盲选)
+        first_model = supported_models[0]
+        print(f"⚠️ 未识别出常用模型，强制使用第一个: {first_model}")
+        return genai.GenerativeModel(first_model)
+        
+    except Exception as e:
+        print(f"❌ 模型匹配失败: {e}")
+        return None
+
+# ================= 2. 深度数据采集 (高产版) =================
 def get_data():
-    print("🚀 开始全网情报挖掘 (加量版)...")
+    print("🚀 开始全网情报挖掘 (15+条版)...")
     data_text = ""
     
-    # 1. Google Trends (宏观) -> 增加到 20 条
+    # 1. Google Trends (抓20条)
     try:
         feed = feedparser.parse("https://trends.google.com/trends/trendingsearches/daily/rss?geo=US")
-        data_text += "\n【Google Trends (Macro Traffic)】:\n"
-        for entry in feed.entries[:20]: # 抓取前 20 个
+        data_text += "\n【Google Trends (Macro)】:\n"
+        for entry in feed.entries[:20]:
             traffic = getattr(entry, 'ht_approx_traffic', 'N/A')
             data_text += f"- Keyword: {entry.title} (Traffic: {traffic})\n  News: {entry.description}\n"
     except Exception as e:
         print(f"⚠️ Google 跳过: {e}")
 
-    # 2. Reddit 垂直板块 (微观痛点) -> 每个板块增加到 8 条
+    # 2. Reddit 垂直板块 (每个抓8条)
     reddit_feeds = [
         ("r/Entrepreneur", "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day"), 
         ("r/SideProject", "https://www.reddit.com/r/SideProject/top/.rss?t=day"),   
@@ -49,7 +82,6 @@ def get_data():
             feed = feedparser.parse(url, agent="Mozilla/5.0")
             if feed.entries:
                 data_text += f"\n【Source: {source_name}】:\n"
-                # 增加抓取量：每个板块抓 8 条，5个板块就是 40 条
                 for entry in feed.entries[:8]: 
                     content_snippet = "No Content"
                     if hasattr(entry, 'content'):
@@ -64,10 +96,10 @@ def get_data():
             
     return data_text
 
-# ================= 3. AI 双语商业分析师 (强制 15+ 条) =================
+# ================= 3. AI 双语分析 (强制数量) =================
 def analyze_to_html(text_data):
     model = get_best_model()
-    if not model: return "<h1>AI 配置失败</h1>"
+    if not model: return "<h1>AI 配置失败：未找到可用模型</h1>"
 
     date_str = datetime.now().strftime("%Y-%m-%d")
     print(f"🧠 AI 正在进行大规模双语分析...")
@@ -81,13 +113,14 @@ def analyze_to_html(text_data):
     Identify **Business Opportunities**, **User Pain Points**, and **Viral Trends**.
 
     【Quantity Requirement】
-    **CRITICAL**: You MUST generate at least **15 to 20 items** in total. Do not output less than 15 items.
+    **CRITICAL**: You MUST generate at least **15 items** in total. 
+    (Generate 5 items for EACH of the 3 sections below).
 
     【Output Structure】
-    Please generate 3 sections. Each section must have 5-6 items.
+    Please generate 3 sections.
 
     ### Section 1: 🚀 Business Opportunities & Pain Points (商机与痛点)
-    *Target: 5-6 items* (Source: r/Entrepreneur, r/SideProject, r/marketing)
+    *Target: 5 items* (Source: r/Entrepreneur, r/SideProject)
     * **Card Content**:
       - **Headline**: English Title / 中文标题
       - **Analysis (Bilingual)**:
@@ -96,7 +129,7 @@ def analyze_to_html(text_data):
       - **Actionable Tip**: One specific advice (Bilingual).
 
     ### Section 2: 🔥 Viral Trends & Traffic (流量密码)
-    *Target: 5-6 items* (Source: Google Trends & r/popular)
+    *Target: 5 items* (Source: Google Trends & r/popular)
     * **Card Content**:
       - **Headline**: English Keyword / 中文热词
       - **Context (Bilingual)**:
@@ -105,7 +138,7 @@ def analyze_to_html(text_data):
       - **Marketing Angle**: How to use this trend? (Bilingual).
 
     ### Section 3: 💡 Tech & Industry Signals (行业信号)
-    *Target: 5-6 items* (Source: r/technology, r/business)
+    *Target: 5 items* (Source: r/technology, r/business)
     * **Card Content**:
       - **Headline**: English Event / 中文事件
       - **Impact (Bilingual)**:
@@ -140,4 +173,4 @@ if __name__ == "__main__":
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_page)
     
-    print("✅ 15+条双语情报生成完成")
+    print("✅ 任务完成")
